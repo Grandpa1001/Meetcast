@@ -39,7 +39,7 @@
                     </sup>
                 </h3>
 
-                <a class="rounded-3xl bg-gradient-to-r from-pink-500 via-orange-500 to-rose-500 text-white text-xl font-bold px-8 py-2.5 max-w-fit mx-auto" href="{{route('register')}}">
+                <a class="rounded-3xl bg-gradient-to-r from-violet-500 via-pink-500 to-red-500 text-white text-xl font-bold px-8 py-2.5 max-w-fit mx-auto" href="{{route('register')}}">
                     Create account
                 </a>
             </center>
