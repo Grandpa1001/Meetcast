@@ -1,6 +1,6 @@
 
-    <div class="h-[1000px] bg-blue-500 w-full">
-        {{-- In work, do what you enjoy. --}}
+    <div class="h-screen items-center grid">
+        <livewire:swiper.swiper />
     </div>
 
 

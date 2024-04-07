@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::get('/app',Home::class)->name('app');
+Route::get('/app',Home::class)->middleware(['auth'])->name('app');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
