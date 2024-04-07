@@ -44,7 +44,7 @@
 
                 {{-- Tab section --}}
                 <section
-                 x-data="{tab:'2'}"
+                 x-data="{tab:'1'}"
                  class="mb-auto overflow-y-auto overflow-x-scroll relative">
 
                     <header class="flex items-center gap-5 mb-2 p-4 sticky top-0 bg-white z-10">
@@ -65,9 +65,31 @@
 
                     </header>
                     <main>
+                        {{-- matches --}}
                         <aside class="px-2 " x-show="tab=='1'">
-                            1
+                            <div class="grid grid-cols-3 gap-2">
+
+                                @for ($i=0; $i< 12; $i++)
+                                    
+                                
+                                <div class="relative">
+                                    {{-- dot --}}
+                                    <span class="-top-6 -right-5 absolute">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot text-violet-500 w-12 h-12" viewBox="0 0 16 16">
+                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                                          </svg>
+                                    </span>
+                                    <img src=" https://source.unsplash.com/200x200?face-woman-{{$i}}" alt="image" class="h-36 rounded-lg object-cover">
+                                   
+                                    {{-- name --}}
+                                    <h5 class="absolute rounded-lg bottom-2 bo left-2 text-white font-bold text-xs">
+                                        {{fake()->name}}
+                                    </h5>
+                                </div>
+                                @endfor
+                            </div>
                         </aside>
+                        {{-- messages --}}
                         <aside x-cloak class="px-2 " x-show="tab=='2'">
                             2
                         </aside>
