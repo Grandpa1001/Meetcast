@@ -66,10 +66,10 @@
                     </header>
                     <main>
                         {{-- matches --}}
-                        <aside class="px-2 " x-show="tab=='1'">
+                        <aside class="px-2" x-show="tab=='1'">
                             <div class="grid grid-cols-3 gap-2">
 
-                                @for ($i=0; $i< 12; $i++)
+                                @for ($i=0; $i< 3; $i++)
                                     
                                 
                                 <div class="relative">
@@ -92,7 +92,7 @@
                         {{-- messages --}}
                         <aside x-cloak class="px-2 " x-show="tab=='2'">
                             <ul>
-                                @for ($i =0; $i < 8; $i++)
+                                @for ($i =0; $i < 2; $i++)
                                 <li>
                                     <a
                                      @class(['flex gap-4 items-center p-2','border-r-4 border-violet-500 bg-white py-3'=>$i==3?true:false])
@@ -128,7 +128,7 @@
             </aside>
 
             <!-- Page Content -->
-            <main class="flex-1 flecx-col overflow-y-auto p-5 flex">
+            <main class="flex-1 flecx-col overflow-y-auto flex">
                 {{ $slot }}
             </main>
         </div>
