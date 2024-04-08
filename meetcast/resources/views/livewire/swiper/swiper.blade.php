@@ -501,12 +501,11 @@
 
                  {{-- close profile button --}}
 
-                 <button @click="profile=false" class="absolute -bottom-4 right-3 bg-tinder p-3 hover:scale-110 transition-transform rounded-full max-w-fit max-h-fit text-white ">
+                 <button @click="profile=false" class="absolute -bottom-4 right-3 bg-meetcast p-3 hover:scale-110 transition-transform rounded-full max-w-fit max-h-fit text-white ">
 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
                       </svg>
-                      
 
                  </button>
 
