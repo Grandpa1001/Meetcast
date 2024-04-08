@@ -128,7 +128,7 @@
             </aside>
 
             <!-- Page Content -->
-            <main class="flex-1 flecx-col overflow-y-auto flex">
+            <main class="flex-1 flex-col overflow-y-auto flex">
                 {{ $slot }}
             </main>
         </div>

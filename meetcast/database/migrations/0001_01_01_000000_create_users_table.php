@@ -15,6 +15,20 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+
+        //new data
+            $table->string('about');
+            $table->timestamp('boosted_until')->nullable();
+            $table->string('profession')->nullable();
+            $table->string('university')->nullable();
+            $table->string('city')->nullable();
+            $table->unsignedBigInteger('FID')->nullable();  //height
+            $table->string('typeProfile')->nullable(); //age
+
+            //$table->enum('cast_goals',['new friends', 'another'])->nullable();  //relationship_goals
+            $table->string('cast_goals')->nullable();
+
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
