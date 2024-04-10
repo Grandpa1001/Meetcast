@@ -1,8 +1,9 @@
-<div class="m-auto md:p-10 w-full h-full relative">
+<div id="meetcast" class="m-auto md:p-10 w-full h-full relative">
+ 
+{{-- Swipe cards --}}
+<main class="relative h-full md:h-[600px]    w-full md:w-96 m-auto">
+    @foreach ($users as $i => $user)
 
-    <div class="relative h-full  md:h-[600px] w-full md:w-96 m-auto">
-
-        @for ($i = 0; $i < 4; $i++) 
         <div 
             @swipedright.window="console.log('right')"
             @swipedleft.window="console.log('left')" 
@@ -298,13 +299,11 @@
 
                             <div class="col-span-10">
                                 <h4 class="font-bold text-3xl">
-                                    {{fake()->name}}
+                                    {{$user->name}} {{$user->typeProfile}}
                                 </h4>
 
                                 <p class="text-lg line-clamp-3">
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel tempore cupiditate
-                                    voluptate quia, itaque consectetur, voluptates quod repellendus facilis ut quo
-                                    amet accusantium quam vitae officiis, rerum adipisci reiciendis cumque.
+                                    {{$user->about}}
                                 </p>
 
                             </div>
@@ -434,7 +433,6 @@
 
 
             {{-- profile card --}}
-
             <div
              x-cloak
              x-show="profile"
@@ -518,9 +516,9 @@
              <section class="grid gap-4 p-3">
 
                 <div class="flex items-center text-3xl gap-3 text-wrap">
-                    <h3 class="font-bold"> {{fake()->name}} </h3>
+                    <h3 class="font-bold"> {{$user->name}} </h3>
                     <span class="font-semibold text-gray-800">
-                        22
+                        {{$user->typeProfile}}
                     </span>
                 </div>
 
@@ -528,13 +526,13 @@
 
                 <ul>
                     <li class="items-center text-gray-600 text-lg">
-                        Software developer
+                        {{$user->profession}}
                     </li>
                     <li class="items-center text-gray-600 text-lg">
-                        186 cm
+                        FID: {{$user->FID}}
                     </li>
                     <li class="items-center text-gray-600 text-lg">
-                        Lives in Spain
+                        {{$user->city?'Lives in '.$user->city:''}}
                     </li>
                 </ul>
 
@@ -542,7 +540,9 @@
 
                  {{-- bio --}}
 
-                 <p class="text-gray-600"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad odio deleniti quas maxime debitis eum ullam totam ratione sapiente aspernatur, adipisci, magnam animi a? Fuga exercitationem in voluptatem consectetur eum?</p>
+                 <p class="text-gray-600"> 
+                    {{$user->about}}
+                 </p>
 
                  {{-- Relatioship goals --}}
                  <div class="rounded-xl bg-green-200 h-24 px-4 py-2 max-w-fit flex gap-4 items-center">
@@ -550,7 +550,7 @@
                     <div class="text-3xl"> 👋 </div>
                     <div class="grid w-4/5">
                         <span class="font-bold text-sm text-green-800">Looking for  </span>
-                        <span class="text-lg text-green-800"> New friends </span>
+                        <span class="text-lg text-green-800 capitalize">  {{str_replace('_',' ',$user->cast_goals->value)}}</span>
 
                     </div>
                  </div>
@@ -559,32 +559,53 @@
                  
                  <section class="divide-y space-y-2">
 
-                    <div class="spacey-y-3 py-2">
-                        <h3 class="font-bold text-xl py-2"> Languages i know </h3>
-                         <ul class="flex flex-wrap gap-3">
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">German</li>
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">Turkish</li>
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">English</li>
-                         </ul>
+                    @if ($user->languages)
+              
+                    <div class="space-y-3 py-2">
+        
+                      <h3 class="font-bold text-xl">Languages i know</h3>
+        
+                      <ul class="flex flex-wrap gap-3 ">
+                        @foreach ($user->languages as $language)
+                        <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5 capitalize">{{$language->name}}</li>
+                        @endforeach
+                      </ul>
+        
                     </div>
+        
+                    @endif
 
-                    <div class="spacey-y-3 py-2">
-                        <h3 class="font-bold text-xl py-2"> Basics </h3>
-                         <ul class="flex flex-wrap gap-3">
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">Touch</li>
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">I Bachelors</li>
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">Better in person</li>
-                         </ul>
+                    @if ($user->basics)
+              
+                    <div class="space-y-3 py-2">
+        
+                      <h3 class="font-bold text-xl">Basics</h3>
+        
+                      <ul class="flex flex-wrap gap-3 ">
+                        @foreach ($user->basics as $basic)
+                        <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">{{$basic->name}}</li>
+                        @endforeach
+                      </ul>
+        
                     </div>
+        
+                    @endif
 
-                    <div class="spacey-y-3 py-2">
-                        <h3 class="font-bold text-xl py-2"> Lifestyle </h3>
-                         <ul class="flex flex-wrap gap-3">
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">Non Smoker</li>
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">Gym</li>
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">Travel</li>
-                         </ul>
+                    @if ($user->chains)
+              
+                    <div class="space-y-3 py-2">
+        
+                      <h3 class="font-bold text-xl">Chains</h3>
+        
+                      <ul class="flex flex-wrap gap-3 ">
+                        @foreach ($user->chains as $chain)
+                        <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">{{$chain->name}}</li>
+                        @endforeach
+                      </ul>
+        
                     </div>
+        
+                    @endif
 
                  </section>
 
@@ -654,9 +675,11 @@
             </div>
 
 
+        </div>
+
+        @endforeach
+    
+      </main>
+    
+    
     </div>
-
-    @endfor
-
-</div>
-</div>
