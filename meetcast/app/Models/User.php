@@ -40,14 +40,12 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'cast_goals' => CastGoalsEnum::class,
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'cast_goals' => CastGoalsEnum::class,
+    ];
+
 
     protected static function boot(){
         parent::boot();  //przydatna
@@ -91,35 +89,51 @@ class User extends Authenticatable
     }
 
 
-    /* Swipe model relations */
-
+    /**
+     * SWIPE 
+     * */
     /* user has many swipes */
-
-    function swipes() : HasMany {
-        return $this->hasMany(Swipe::class,'user_id');
+    public function swipes()
+    {
+        return $this->hasMany(Swipe::class, 'user_id');
     }
 
-    /* allows to check if user has swiped with another user */
-    function hasSwiped (User $user,$type=null) : bool {
-        $query= $this->swipes()->where('swiped_user_id',$user->id);
-        if($type !==null){
-            $query->where('type',$type);
+    /* Allows you to check if a user has swiped with another user */
+    public function hasSwiped(User $user, $type = null):bool
+    {
+        $query = $this->swipes() ->where('swiped_user_id', $user->id);
+
+        if ($type !== null) {
+            $query->where('type', $type);
         }
         return $query->exists();
     }
 
-    /* exclude users who has already beem swiped by the autjh user */
-    function scopeWhereNotSwiped($query)  {
-
-        //exclude the users who Ids are in the result of the subquery
-        return $query->whereNotIn('Id', function($subquery){
-
-            //select the swiped_user_id from the swipes table where the user_id is the auth id
-            $subquery->select('swiped_user_id')
-                      ->from('swipes')
-                      ->where('user_id',auth()->id());
+    /** Scope to exclude users who have already been swiped by the authenticated user. */
+    public function scopeWhereNotSwiped($query)
+    {
+        // Exclude users whose IDs are in the result of the subquery
+        return $query->whereNotIn('id', function ($subquery) {
+             // Select the swiped_user_id from the swipes table where user_id is the authenticated user's ID
+               $subquery->select('swiped_user_id')
+                ->from('swipes')
+                ->where('user_id', auth()->id());
         });
     }
 
+    /* MATCH */
+
+    public function matches() {
+        return $this->hasManyThrough(
+            SwipeMatch::class,
+            Swipe::class,
+            'user_id',
+            'swipe_id_1',
+            'id',
+            'id'
+        )->orWhereHas('swipe2',function($query){
+            $query->where('user_id',$this->id);
+        });
+    }
 
 }

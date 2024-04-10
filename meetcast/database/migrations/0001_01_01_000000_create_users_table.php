@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
 
         //new data
-            $table->string('about');
+            $table->string('about')->nullable();;
             $table->timestamp('boosted_until')->nullable();
             $table->string('profession')->nullable();
             $table->string('university')->nullable();
