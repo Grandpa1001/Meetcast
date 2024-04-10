@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             BasicSeeder::class,
+            ChainsSeeder::class
         ]);
 
         \App\Models\User::factory(10)->create();
