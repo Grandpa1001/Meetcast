@@ -11,8 +11,14 @@ class Basic extends Model
     use HasFactory;
 
     protected $guarded=[];
-    
+
     protected $casts=[
-        'group' => BasicGroupEnum::class
+        'group'=>BasicGroupEnum::class
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'basic_user');
+    }
+
 }

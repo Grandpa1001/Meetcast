@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CastGoalsEnum;
+use App\Enums\BasicGroupEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,4 +48,31 @@ class User extends Authenticatable
             'cast_goals' => CastGoalsEnum::class,
         ];
     }
+
+protected static function boot(){
+    parent::boot();  //przydatna
+
+    static::created(function($user){
+
+        $basics=Basic::all();
+
+        //if like nft
+        $basic=$basics->where('group', BasicGroupEnum::nft)->first();
+        $user->basics()->attach($basic);
+
+        //community
+        $basic=$basics->where('group', BasicGroupEnum::community)->first();
+        $user->basics()->attach($basic);
+
+
+    });
+}
+
+
+function basics()  {
+    return $this->belongsToMany(Basic::class,'basic_user');
+    
+}
+
+
 }
