@@ -10,5 +10,9 @@ class Chains extends Model
     use HasFactory;
 
     protected $fillable=['name'];
+
+    public function users(){
+        return $this->belongsToMany(User::class,'chains_user');
+    }
 }
 

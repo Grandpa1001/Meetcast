@@ -75,4 +75,20 @@ function basics()  {
 }
 
 
+public function chains()
+{
+
+  return  $this->belongsToMany(Chains::class,'chains_user');
+    
+}
+
+
+public function languages()
+{
+
+  return  $this->belongsToMany(Language::class,'language_user');
+    
+}
+
+
 }
