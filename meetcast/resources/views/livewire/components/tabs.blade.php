@@ -32,7 +32,7 @@
 
                       @foreach ($matches as $i=> $match) 
                    
-                   <div class="relative">
+                   <div wire:click="createConversation('{{$match->id}}')" class="relative cursor-pointer">
                        {{-- dot --}}
                        <span class="-top-6 -right-5 absolute">
                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot text-violet-500 w-12 h-12" viewBox="0 0 16 16">
@@ -43,7 +43,7 @@
                       
                        {{-- name --}}
                        <h5 class="absolute rounded-lg bottom-2 bo left-2 text-white font-bold text-xs">
-                           {{$match->swipe1->user_id==auth()->id()?$match->swipe2->user->name:''}}
+                           {{$match->swipe1->user_id==auth()->id()?$match->swipe2->user->name:$match->swipe1->user->name}}
                        </h5>
                    </div>
                    @endforeach

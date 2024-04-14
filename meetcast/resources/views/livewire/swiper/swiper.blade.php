@@ -674,10 +674,10 @@
     </main>
 
     {{-- Match found --}}
-
     <div 
     x-data="{ modalOpen: false }" 
     @keydown.escape.window="modalOpen = false" 
+    @close-match-modal.window="modalOpen = false"
     @match-found.window="modalOpen=true"
     class="relative z-50 w-auto h-auto">
      <template x-teleport="body">
@@ -730,7 +730,7 @@
                         </div>
                         {{--  Actions --}}
                         <div class="mx-auto flex flex-col gap-5">
-                            <button class="bg-meetcast text-white font-bold items-center px-3 py-2 rounded-full">
+                            <button wire:click="createConversation" class="bg-meetcast text-white font-bold items-center px-3 py-2 rounded-full">
                                 Send a message
                             </button>
                             <button @click="modalOpen=false" class="bg-gray-500 text-white font-bold items-center px-3 py-2 rounded-full">
