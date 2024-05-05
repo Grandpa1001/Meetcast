@@ -92,7 +92,7 @@
         {{-- footer --}}
         <footer class="sticky bottom py-2 inset-x-0  p-2">
 
-            <form x-data="{body:@entangle('body')}" autocomplete="off">
+            <form x-data="{body:@entangle('body')}" @submit.prevent="$wire.sendMessage()" autocomplete="off">
                 @csrf
                 {{-- hidden input --}}
                 <input type="hidden" autocomplete="false" style="display: none">
@@ -196,7 +196,6 @@
 
 
             {{-- profile information --}}
-
             <section class="grid gap-4 p-3">
 
                 <div class="flex items-center text-3xl gap-3 text-wrap">
