@@ -34,6 +34,9 @@ class Chat extends Component
 
       $this->reset('body');
 
+      #dispatch event to scroll chat to bottom
+      $this->dispatch('scroll-bottom');
+
       #push the message
       $this->loadedMessages->push($createdMessage);
 

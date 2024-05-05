@@ -1,4 +1,32 @@
-<div class="flex h-screen overflow-hidden">
+<div
+x-data="{
+  height:0,
+  conversationElement: document.getElementById('conversation'),
+}"
+
+
+x-init="
+    height=conversationElement.scrollHeight;
+    $nextTick(()=> conversationElement.scrollTop=height);
+    "
+
+@scroll-bottom.window="
+$nextTick(()=>{ 
+  {{--overflow-y: hidden; is used to hide the vertical scrollbar initially. --}}
+  conversationElement.style.overflowY='hidden';
+
+  {{-- scroll the element down --}}
+  conversationElement.scrollTop= conversationElement.scrollHeight;
+
+  {{-- After updating the chat height, overflowY is set back to 'auto', 
+                 which allows the browser to determine whether to display the scrollbar 
+                 based on the content height.  --}}
+  conversationElement.style.overflowY='auto';
+
+} );
+"
+
+class="flex h-screen overflow-hidden">
 
     <main class="w-full grow border flex flex-col relative">
 
@@ -51,6 +79,7 @@
 
         {{-- body --}}
         <section
+            id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
             @foreach ($loadedMessages as $message)
@@ -108,10 +137,8 @@
                     <input x-model="body" type="text" autocomplete="off" autofocus placeholder="Write your message here"
                         maxlength="1700"
                         class="col-span-9 bg-gray-100 border-0 outline-0 focus:border-0 focus:ring-0 hover:ring-0 rounded-lg focus:outline-none">
-
-                    <button x-bind:disabled="!body.trim()" type="submit" class="col-span-2">
-                        Send
-                    </button>
+                        
+                        <button x-bind:disabled="!body.trim()" class="col-span-2" type='submit'>Send</button>
 
 
                 </div>
