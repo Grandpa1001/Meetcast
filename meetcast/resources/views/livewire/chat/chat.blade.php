@@ -79,6 +79,27 @@ class="flex h-screen overflow-hidden">
 
         {{-- body --}}
         <section
+
+        @scroll="
+            scrollTop = $el.scrollTop;
+
+            if(scrollTop<=0){
+                @this.dispatch('loadMore');
+            }
+        "
+
+        @update-height.window="
+        $nextTick(()=>{
+            newHeight=$el.scrollHeight;
+            oldHeight=height;
+
+            $el.scrollTop=newHeight-oldHeight;
+
+            height=newHeight;
+
+        });
+        "
+
             id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
@@ -138,7 +159,7 @@ class="flex h-screen overflow-hidden">
                         maxlength="1700"
                         class="col-span-9 bg-gray-100 border-0 outline-0 focus:border-0 focus:ring-0 hover:ring-0 rounded-lg focus:outline-none">
                         
-                        <button x-bind:disabled="!body.trim()" class="col-span-2" type='submit'>Send</button>
+                        <button x-bind:disabled="!body?.trim()" class="col-span-2" type='submit'>Send</button>
 
 
                 </div>
