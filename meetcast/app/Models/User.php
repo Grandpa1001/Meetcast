@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -142,5 +144,10 @@ class User extends Authenticatable
         return $this->hasMany(Conversation::class,'sender_id')->orWhere('receiver_id',$this->id);
     }
 
+    /* Unread Messages count */
+    function unReadMessagesCount() : int {
+        return $this->hasMany(Message::class,'receiver_id')->where('read_at',null)->count();
+
+    }
 
 }

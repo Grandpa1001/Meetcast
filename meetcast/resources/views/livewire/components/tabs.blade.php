@@ -3,7 +3,7 @@
     <section
     x-data="{ tab:{{request()->routeIs('chat.index')||request()->routeIs('chat')?'2':'1'}} }"
     @match-found.window="$wire.$refresh()"
-    class="mb-auto overflow-y-auto overflow-x-scroll relative">
+    class="mb-auto overflow-y-auto h-full overflow-x-scroll relative">
 
        <header class="flex items-center gap-5 mb-2 p-4 sticky top-0 bg-white z-10">
 
@@ -18,13 +18,17 @@
 
            <button @click="tab='2'" :class="{ 'border-b-2 border-violet-500': tab=='2' }" class="font-bold text-sm px-2 pb-1.5">
                Messages
-               <span class="rounded-full tx-xs  p-1 px-2 font-bold text-white bg-meetcast">
-                   3
-               </span>
+
+               @if (auth()->user()->unReadMessagesCount()>0)
+                <span class="rounded-full tx-xs  p-1 px-2 font-bold text-white bg-meetcast">
+                    {{auth()->user()->unReadMessagesCount()}}
+                </span>
+               @endif
+
            </button>
 
        </header>
-       <main>
+       <main class="h=full">
            {{-- matches --}}
            <aside class="px-2" x-show="tab=='1'">
                <div class="grid grid-cols-3 gap-2">
