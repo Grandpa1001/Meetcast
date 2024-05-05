@@ -10,6 +10,12 @@ class Tabs extends Component{
 
     protected $listeners=['new-message-created'=>'$refresh'];
 
+    public $selectedConversationId;
+
+    function mount() {
+        $this->selectedConversationId=request()->chat;
+    }
+
     public function createConversation(SwipeMatch $match){
         $receiver=$match->swipe1->user_id==auth()->id()?$match->swipe2->user:$match->swipe1->user;
 

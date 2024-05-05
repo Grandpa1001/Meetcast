@@ -56,7 +56,7 @@
                     @foreach ($conversations as $i => $conversation)
 
                    <li>
-                        <a @class(['flex gap-4 items-center p-2','border-r-4 border-red-500 bg-white py-3'=> request()->chat== $conversation->id])
+                        <a @class(['flex gap-4 items-center p-2','border-r-4 border-red-500 bg-white py-3'=>$selectedConversationId== $conversation->id])
                             wire:navigate
                             href="{{route('chat',$conversation->id)}}">
                         
