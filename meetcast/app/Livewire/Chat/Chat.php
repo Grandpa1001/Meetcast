@@ -50,8 +50,9 @@ class Chat extends Component
 
       
   }
-    #[On('loadMore')]
-    function loadMore() {
+
+  #[On('loadMore')]
+  function loadMore() {
       #increment
       $this->paginate_var +=10;
 
@@ -61,7 +62,7 @@ class Chat extends Component
       #dispatch event
       $this->dispatch('update-height');
 
-    }
+  }
 
   /* Method to load messages  */
   function loadMessages()  {
@@ -93,6 +94,12 @@ class Chat extends Component
             ->where('id', $this->conversation->id)
             ->exists();
     abort_unless($belongsToConversation,403);
+
+    #mark messages as read
+    Message::where('conversation_id', $this->conversation->id)
+                    ->where('receiver_id',auth()->id())
+                    ->whereNull('read_at')
+                    ->update(['read_at'=>now()]);
 
     #set receiver
     $this->receiver= $this->conversation->getReceiver();

@@ -55,6 +55,10 @@
 
                     @foreach ($conversations as $i => $conversation)
 
+                    @php
+                        $lastMessage=$conversation->messages()?->latest()->first();
+                    @endphp
+
                    <li>
                         <a @class(['flex gap-4 items-center p-2','border-r-4 border-red-500 bg-white py-3'=>$selectedConversationId== $conversation->id])
                             wire:navigate
@@ -76,8 +80,26 @@
                         </div>
 
                         <div class="overflow-hidden">
-                           <h6 class="font-bold truncate">{{$conversation->getReceiver()->name}}</h6>
-                           <p class="text-gray-600 truncate">{{$conversation->messages()?->latest()->first()?->body}}</p>
+                            <h6 class="font-bold truncate"> {{$conversation->getReceiver()->name}}</h6>
+                                <p 
+                                @class([
+                                    'truncate flex gap-2 items-center',
+                                    'font-semibold text-black' => !$lastMessage?->isRead() && $lastMessage?->sender_id != auth()->id(),
+                                    'font-normal text-gray-600' => $lastMessage?->isRead() && $lastMessage?->sender_id != auth()->id(),
+                                    'font-normal text-gray-600' => $lastMessage?->isRead() && $lastMessage?->sender_id == auth()->id(),
+                                ])> 
+
+                                {{-- show if message belongs to authenticated user --}}
+                                @if ($lastMessage?->sender_id == auth()->id())
+                                {{-- arrow-uturn-left :heroicons --}}
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                                    </svg>
+                                </span>
+                                @endif
+                                {{$conversation->messages()?->latest()->first()?->body}}
+                            </p>
                         </div>
                        </a>
                    </li>
