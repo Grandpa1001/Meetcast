@@ -24,7 +24,7 @@
         <div class="flex flex-1 overflow-hidden">
 
             <!-- Side Bar -->
-            <aside class="hidden md:flex flex-col bg-gray-100 sm:w-[22rem] w-full">
+            <aside class="flex flex-col bg-gray-100 sm:w-[22rem] w-full">
                 <header class="bg-meetcast py-5 flex items-center p-2.5 sticky top-0">
                     {{-- avatar --}}
                     <x-avatar class="w-10 h-10" />
@@ -48,8 +48,8 @@
             </aside>
 
             <!-- Page Content -->
-            <main class="flex-1 flex-col overflow-y-auto flex">
-                {{ $slot }}
+            <main class="flex-1 flex-col overflow-y-auto ">
+                <livewire:home/>
             </main>
         </div>
         @livewireScripts

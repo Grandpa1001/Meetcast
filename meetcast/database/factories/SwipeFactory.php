@@ -18,6 +18,9 @@ class SwipeFactory extends Factory
     {
         return [
             //
+            'user_id'=>User::class,
+            'swiped_user_id'=>User::class,
+            'type'=>'right',
         ];
     }
 }

@@ -10,8 +10,11 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
+
 class Swiper extends Component
 {
+
+    
 
     #[Locked]
     public $currentMatchId;
@@ -112,7 +115,7 @@ class Swiper extends Component
 
     public function createConversation(){
 
-        Conversation::create([
+        $conversation = Conversation::create([
             'sender_id'=>auth()->id(),
             'receiver_id'=>$this->swipedUserId,
             'match_id'=>$this->currentMatchId,
@@ -125,6 +128,8 @@ class Swiper extends Component
         #reset properties 
         $this->reset('swipedUserId','currentMatchId');
 
+        #redirect to conversation
+        $this->redirect(route('chat', $conversation->id), navigate:true);
 
     }
 
