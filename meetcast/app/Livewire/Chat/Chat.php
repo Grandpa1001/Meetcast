@@ -3,10 +3,14 @@
 namespace App\Livewire\Chat;
 
 use App\Livewire\Components\Tabs;
-use Livewire\Attributes\On;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Notifications\MessageSentNotification;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Illuminate\Support\Facades\Broadcast;
+use App\Livewire\Notifications\TestEvent;
+use Illuminate\Support\Facades\Log;
 
 class Chat extends Component
 {
@@ -14,11 +18,32 @@ class Chat extends Component
     public $conversation;
     public $receiver;
 
+    public $loadedMessages;
+    public $paginate_var= 10;
+
 
     public $body;
 
-    public $loadedMessages;
-    public $paginate_var=15;
+
+    public function listenBroadcastedMessage($event)
+    {
+        $this->dispatch('scroll-bottom');
+
+        $newMessage = Message::find($event['message_id']);
+
+
+        #push message
+        $this->loadedMessages->push($newMessage);
+
+        #mark as read
+        $newMessage->read_at = now();
+        $newMessage->save();
+
+        #brodcast new message created -By other user ofcourse
+        $this->dispatch('new-message-created');
+
+
+    }
 
 
     function sendMessage()  {
@@ -35,8 +60,9 @@ class Chat extends Component
 
       $this->reset('body');
 
-      #dispatch event to scroll chat to bottom
+      #scroll to bottom
       $this->dispatch('scroll-bottom');
+
 
       #push the message
       $this->loadedMessages->push($createdMessage);
@@ -45,23 +71,35 @@ class Chat extends Component
       $this->conversation->updated_at=now();
       $this->conversation->save();
 
-      #dispatch event
+      #dispatch event 'new-message-created' after updating conversation 
       $this->dispatch('new-message-created');
 
+      #broadcast new message 
+      $this->receiver->notify(new MessageSentNotification(
+        Auth()->User(),
+        $createdMessage,
+        $this->conversation,
+    ));
       
   }
 
-  #[On('loadMore')]
-  function loadMore() {
-      #increment
-      $this->paginate_var +=10;
 
-      #call the loadMessages()
+
+
+  #[On('loadMore')]
+  function loadMore()
+  {
+
+      //dd('reached');
+
+      #increment
+      $this->paginate_var += 10;
+
+      #call loadMessage
       $this->loadMessages();
 
-      #dispatch event
+      #dispatch event- update height
       $this->dispatch('update-height');
-
   }
 
   /* Method to load messages  */
@@ -82,7 +120,8 @@ class Chat extends Component
 
 }
 
-  public function mount() {
+  public function mount()
+  {
     #make sure user is authenticated
     abort_unless(auth()->check(),401);
 
@@ -91,20 +130,23 @@ class Chat extends Component
 
     #check if user belongs to conversation
     $belongsToConversation= auth()->user()->conversations()
-            ->where('id', $this->conversation->id)
-            ->exists();
+                                          ->where('id', $this->conversation->id)
+                                          ->exists();
     abort_unless($belongsToConversation,403);
 
-    #mark messages as read
-    Message::where('conversation_id', $this->conversation->id)
-                    ->where('receiver_id',auth()->id())
-                    ->whereNull('read_at')
-                    ->update(['read_at'=>now()]);
+     #mark messages belonging to receiver as read
+     Message::where('conversation_id',$this->conversation->id)
+            ->where('receiver_id',auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at'=>now()]);
 
     #set receiver
     $this->receiver= $this->conversation->getReceiver();
 
+    #Call load messages
     $this->loadMessages();
+
+
   }
     
     public function render()

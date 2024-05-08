@@ -9,7 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 
-
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -148,6 +147,10 @@ class User extends Authenticatable
     function unReadMessagesCount() : int {
         return $this->hasMany(Message::class,'receiver_id')->where('read_at',null)->count();
 
+    }
+
+    public function receivesBroadcastNotificationsOn(): string{
+        return 'users.'.$this->id;
     }
 
 }
