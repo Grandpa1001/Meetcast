@@ -6,14 +6,14 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Support\Facades\Log;
 
-class MessageSentNotification extends Notification implements ShouldBroadcastNow
+class MessageSentNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -31,23 +31,6 @@ class MessageSentNotification extends Notification implements ShouldBroadcastNow
         //
     }
 
-        /**
-     * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return BroadcastMessage
-     */
-
-     public function toBroadcast($notifiable): BroadcastMessage
-     {
-         return new BroadcastMessage([
-             'user_id' => $this->user->id,
-             'message_id' => $this->message->id,
-             'conversation_id' => $this->conversation->id,
-             
-         ]);
-    
-     }
 
     /**
      * Get the notification's delivery channels.
@@ -59,6 +42,15 @@ class MessageSentNotification extends Notification implements ShouldBroadcastNow
         return ['broadcast'];
     }
 
+
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'user_id' => $this->user->id,
+            'message_id' => $this->message->id,
+            'conversation_id' => $this->conversation->id,
+        ];
+    }
 
 
 }

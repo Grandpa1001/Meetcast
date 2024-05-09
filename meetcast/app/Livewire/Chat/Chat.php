@@ -76,10 +76,12 @@ class Chat extends Component
 
       #broadcast new message 
       $this->receiver->notify(new MessageSentNotification(
-        Auth()->User(),
+        auth()->user(),
         $createdMessage,
-        $this->conversation,
+        $this->conversation
     ));
+
+    
       
   }
 
